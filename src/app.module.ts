@@ -1,17 +1,28 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { getEnvPath } from './common/helper/env.helper';
-import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
-
-const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath, isGlobal: true }),
-    TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
+    ConfigModule.forRoot({ envFilePath: '.development.env' }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: 'nest_api_learning',
+      // database: process.env.DATABASE_NAME,
+      autoLoadEntities: true,
+      synchronize: true,
+      entities: ['dist/**/*.entities.{ts,js}'],
+      migrations: ['dist/migrations/*.{ts,js}'],
+      migrationsTableName: 'typeorm_migrations',
+    }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
