@@ -13,9 +13,9 @@
     "typeorm:revert-migration": "npm run typeorm -- -d ./typeorm.config.ts migration:revert",
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "start:dev": "NODE_ENV=development nest start --watch",
+    "start:dev": "NODE_ENV=DEV nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "NODE_ENV=production node dist/src/main",
+    "start:prod": "NODE_ENV=PROD node dist/src/main",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -24,7 +24,7 @@
     "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "prettier": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"typeorm.config.ts\"",
     "format": "npm run prettier && npm run lint",
-    "prepare-for-commit": "npm run format && npm run test:e2e && npm run build"
+    "pre-commit": "npm run format && npm run test:e2e && npm run build"
   },
   "dependencies": {
     "@nestjs/class-validator": "^0.13.4",
