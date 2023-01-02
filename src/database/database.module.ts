@@ -7,17 +7,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: () => ({
         type: 'postgres',
         host: process.env.DATABASE_HOST,
         port: +process.env.DATABASE_PORT,
         username: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
-        database: 'nest_api_learning',
-        // database: process.env.DATABASE_NAME,
+        database: process.env.DATABASE_NAME,
         autoLoadEntities: true,
-        // synchronize: true,
-        // entities: [User],
+        // synchronize: true, // never use in production
         entities: ['dist/**/entities/*.entity.{ts,js}'],
         migrations: ['dist/migrations/*.{ts,js}'],
         migrationsTableName: 'typeorm_migrations',
